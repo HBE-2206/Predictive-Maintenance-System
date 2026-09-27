@@ -223,7 +223,7 @@ predictive_maintenance.ipynb
 
 # 👨‍💻 Author
 
-## Hazem Mohamed
+## HAZEM ELSHAFEY
 
 Computer Science & Artificial Intelligence Student
 
@@ -231,13 +231,11 @@ Machine Learning Engineer
 
 ROV Team Leader
 
-📧 Email: Your Email
+📧 Email: hm2502630@gmail.com
 
-💼 LinkedIn:
-https://linkedin.com/in/YourProfile
+💼 LinkedIn: https://www.linkedin.com/in/hazem-el-shafey-b56405331/
 
-🐙 GitHub:
-https://github.com/HBE-2206
+🐙 GitHub: https://github.com/HBE-2206
 
 ---
 
