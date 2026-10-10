@@ -1,244 +1,130 @@
-# 🔧 Predictive Maintenance System using Machine Learning
+# Predictive Maintenance with Machine Learning
 
 <p align="center">
-
-![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?style=for-the-badge&logo=scikitlearn)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?style=for-the-badge&logo=pandas)
-![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Computing-013243?style=for-the-badge&logo=numpy)
-![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/scikit--learn-Modeling-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="scikit-learn"/>
+  <img src="https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter"/>
+  <img src="https://img.shields.io/badge/License-MIT-2EA44F?style=for-the-badge" alt="MIT License"/>
 </p>
 
----
+An end-to-end machine-learning notebook exploring **industrial machine-failure prediction** with the AI4I 2020 Predictive Maintenance Dataset. The workflow emphasizes leakage-aware feature selection, class-imbalance-aware evaluation, probability ranking, and a decision threshold aligned with a high-precision maintenance use case.
 
-## 📌 Project Overview
+> **Status:** Educational / portfolio project. The reported results are from one held-out test split, not evidence of production readiness or real-world operational savings.
 
-Predictive Maintenance has become one of the most important applications of Artificial Intelligence in modern industry.
+## Project at a glance
 
-This project presents a complete Machine Learning pipeline capable of predicting machine failures before they occur using industrial sensor measurements from the **AI4I 2020 Predictive Maintenance Dataset**.
+- **Dataset:** AI4I 2020 Predictive Maintenance Dataset — 10,000 records and 14 original columns.
+- **Target:** `Machine failure` (binary classification).
+- **Class balance:** approximately 3.4% failure-positive records in this dataset, so accuracy alone can be misleading.
+- **Validation:** stratified 75/25 train/test split with `random_state=42`.
+- **Models:** calibrated Logistic Regression and Random Forest.
+- **Evaluation:** PR-AUC, ROC-AUC, and recall at a precision target of 90%.
 
-The goal is to reduce unexpected downtime, minimize maintenance costs, and improve equipment reliability by enabling proactive maintenance decisions.
+## Results
 
----
+The following values are recorded in the notebook outputs for the held-out test set.
 
-# 🚀 Project Features
+| Model | PR-AUC | ROC-AUC | Recall at ≥90% precision | Selected threshold |
+|---|---:|---:|---:|---:|
+| Calibrated Logistic Regression | 0.3793 | 0.8833 | 12.9% | 0.6475 |
+| Random Forest | **0.7609** | **0.9664** | **35.3%** | 0.5800 |
 
-- 📊 Exploratory Data Analysis (EDA)
-- 🧹 Data Cleaning & Preprocessing
-- 🔍 Data Leakage Detection
-- ⚙️ Feature Engineering
-- 🤖 Machine Failure Prediction
-- 🌳 Random Forest Classifier
-- 📈 Calibrated Logistic Regression
-- 📉 Precision-Recall Curve
-- 📊 ROC Curve
-- 🎯 Recall @ Fixed Precision
-- 📋 Feature Importance Analysis
-- 💼 Business Impact Evaluation
+At the selected high-precision operating point, Random Forest has **22.4 percentage points** more recall than calibrated Logistic Regression. These figures depend on this particular split and should be re-tested with cross-validation and additional data before any operational use.
 
----
+## What the notebook covers
 
-# 📂 Project Structure
+1. Data loading and quality checks.
+2. Review of the target imbalance and missing values.
+3. Feature engineering from the product identifier.
+4. Removal of failure-subtype flags (`TWF`, `HDF`, `PWF`, `OSF`, `RNF`) to reduce target leakage.
+5. Preprocessing with scaling for Logistic Regression and one-hot encoding for categorical features.
+6. Model training and probability calibration.
+7. PR-AUC / ROC-AUC evaluation and recall at a ≥90% precision operating point.
+8. Precision–Recall curves and Random Forest feature-importance analysis.
 
+## Dataset and reference
+
+Download the **AI4I 2020 Predictive Maintenance Dataset** from the official UCI Machine Learning Repository:
+
+- [UCI dataset page and citation details](https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset)
+
+After downloading, place the CSV at:
+
+```text
+data/ai4i2020.csv
 ```
-Predictive-Maintenance-System
-│
-├── notebook/
-│   └── predictive_maintenance.ipynb
-│
-├── data/
-│   └── ai4i2020.csv
-│
-├── assets/
-│   ├── feature_importances_rf.png
-│   ├── pr_curve_comparison.png
-│   ├── metrics_summary.csv
-│   └── operating_point_uplift.csv
-│
+
+The dataset is not stored at the repository root, so the notebook will stop with a clear missing-file error until you download and place it there.
+
+## Run locally
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/HBE-2206/Predictive-Maintenance-System.git
+   cd Predictive-Maintenance-System
+   ```
+
+2. Create and activate a virtual environment (recommended):
+
+   **Windows**
+   ```powershell
+   py -m venv .venv
+   .venv\\Scripts\\Activate.ps1
+   ```
+
+   **macOS / Linux**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+
+4. Download the dataset and place it at `data/ai4i2020.csv`, then launch Jupyter:
+
+   ```bash
+   jupyter notebook predictive_maintenance.ipynb
+   ```
+
+Run the notebook cells from top to bottom. The notebook creates `data/` and `assets/` folders when executed; evaluation tables and figures are generated by the notebook.
+
+## Repository structure
+
+```text
+Predictive-Maintenance-System/
+├── predictive_maintenance.ipynb
 ├── requirements.txt
 ├── README.md
 ├── LICENSE
-└── .gitignore
+└── AuraGrid/
+    ├── AuraGrid_Manufacturing_Operations.csv
+    ├── aura_grid_predictive_maintenance.py
+    ├── requirements.txt
+    └── README.md
 ```
 
----
+The `AuraGrid/` folder is a separate small manufacturing-data case study included in this repository. Its dataset, task definitions, script, dependencies, and reported results are documented in [AuraGrid/README.md](AuraGrid/README.md).
 
-# 📊 Dataset
+## Important limitations and next steps
 
-Dataset Used:
+- The primary notebook results come from a single held-out split. Add stratified cross-validation and uncertainty reporting.
+- The target is imbalanced; choose thresholds according to the cost of missed failures versus unnecessary inspections.
+- Feature-importance values describe model behavior on this dataset and are not causal explanations.
+- Validate any workflow on representative, time-separated operational data before using it for maintenance decisions.
 
-**AI4I 2020 Predictive Maintenance Dataset**
+## Author
 
-The dataset contains approximately **10,000 industrial machine records** with sensor measurements including:
+**Hazem Elshafey** — Computer Science & Artificial Intelligence Student
 
-- Air Temperature
-- Process Temperature
-- Rotational Speed
-- Torque
-- Tool Wear
-- Machine Failure Label
-
-Target Variable:
-
-**Machine Failure (Binary Classification)**
+- **GitHub:** [@HBE-2206](https://github.com/HBE-2206)
+- **LinkedIn:** [Hazem Elshafey](https://www.linkedin.com/in/hazem-el-shafey-b56405331)
+- **Email:** [hm2502630@gmail.com](mailto:hm2502630@gmail.com)
 
 ---
 
-# 🛠️ Technologies Used
-
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Scikit-Learn
-- Jupyter Notebook
-
----
-
-# 🤖 Machine Learning Models
-
-### Random Forest Classifier
-
-- Non-linear classification
-- Feature Importance
-- Robust against overfitting
-
-### Logistic Regression (Calibrated)
-
-- Probability Calibration
-- High Interpretability
-- Balanced Class Weight
-
----
-
-# 📈 Model Evaluation
-
-The project evaluates models using multiple metrics:
-
-- Precision
-- Recall
-- F1 Score
-- ROC-AUC
-- PR-AUC
-- Recall @ 90% Precision
-
----
-
-# 📊 Results
-
-| Model | Description |
-|--------|------------|
-| Random Forest | Strong baseline with high predictive performance |
-| Logistic Regression | Interpretable calibrated model |
-
-Performance reports are automatically saved inside:
-
-```
-assets/
-```
-
-Including:
-
-- metrics_summary.csv
-- operating_point_uplift.csv
-- feature_importances_rf.png
-- pr_curve_comparison.png
-
----
-
-# 📸 Project Outputs
-
-### Precision-Recall Curve
-
-![PR Curve](assets/pr_curve_comparison.png)
-
----
-
-### Feature Importance
-
-![Feature Importance](assets/feature_importances_rf.png)
-
----
-
-# 💡 Business Impact
-
-The developed model enables maintenance teams to:
-
-- Predict machine failures before breakdowns
-- Reduce unplanned downtime
-- Improve maintenance scheduling
-- Lower operational costs
-- Increase equipment reliability
-
----
-
-# ▶️ Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/HBE-2206/Predictive-Maintenance-System.git
-```
-
-Move into the project
-
-```bash
-cd Predictive-Maintenance-System
-```
-
-Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Launch Jupyter Notebook
-
-```bash
-jupyter notebook
-```
-
-Run
-
-```
-predictive_maintenance.ipynb
-```
-
----
-
-# 🔮 Future Improvements
-
-- XGBoost
-- LightGBM
-- CatBoost
-- Hyperparameter Optimization
-- SHAP Explainability
-- Streamlit Web Application
-- Flask REST API
-- Docker Deployment
-
----
-
-# 👨‍💻 Author
-
-## HAZEM ELSHAFEY
-
-Computer Science & Artificial Intelligence Student
-
-Machine Learning Engineer
-
-ROV Team Leader
-
-📧 Email: hm2502630@gmail.com
-
-💼 LinkedIn: https://www.linkedin.com/in/hazem-el-shafey-b56405331/
-
-🐙 GitHub: https://github.com/HBE-2206
-
----
-
-# ⭐ Support
-
-If you found this project useful, consider giving it a ⭐ on GitHub.
+If you find this project useful, feel free to star the repository or open a discussion with suggestions.
