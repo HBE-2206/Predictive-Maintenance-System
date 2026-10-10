@@ -20,16 +20,15 @@ An end-to-end machine-learning notebook exploring **industrial machine-failure p
 - **Models:** calibrated Logistic Regression and Random Forest.
 - **Evaluation:** PR-AUC, ROC-AUC, and recall at a precision target of 90%.
 
-## Results
+## Evaluation methodology
 
-The following values are recorded in the notebook outputs for the held-out test set.
+The notebook uses a stratified **60% train / 15% validation / 25% test** split:
 
-| Model | PR-AUC | ROC-AUC | Recall at ≥90% precision | Selected threshold |
-|---|---:|---:|---:|---:|
-| Calibrated Logistic Regression | 0.3793 | 0.8833 | 12.9% | 0.6475 |
-| Random Forest | **0.7609** | **0.9664** | **35.3%** | 0.5800 |
+- Training data is used to fit preprocessing and models.
+- Validation data is used to select the operating threshold for the target precision.
+- The test set is held out for final PR-AUC, ROC-AUC, precision, and recall reporting.
 
-At the selected high-precision operating point, Random Forest has **22.4 percentage points** more recall than calibrated Logistic Regression. These figures depend on this particular split and should be re-tested with cross-validation and additional data before any operational use.
+This separation avoids selecting a threshold on the same test labels used to report its performance. Run the notebook from top to bottom to generate the current results and output files. Earlier metrics recorded before this split change are historical and should not be compared directly with the newly evaluated models.
 
 ## What the notebook covers
 
