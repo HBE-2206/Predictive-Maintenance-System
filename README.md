@@ -16,7 +16,7 @@ An end-to-end machine-learning notebook exploring **industrial machine-failure p
 - **Dataset:** AI4I 2020 Predictive Maintenance Dataset — 10,000 records and 14 original columns.
 - **Target:** `Machine failure` (binary classification).
 - **Class balance:** approximately 3.4% failure-positive records in this dataset, so accuracy alone can be misleading.
-- **Validation:** stratified 75/25 train/test split with `random_state=42`.
+- **Validation:** stratified 60/15/25 train/validation/test split with `random_state=42`.
 - **Models:** calibrated Logistic Regression and Random Forest.
 - **Evaluation:** PR-AUC, ROC-AUC, and recall at a precision target of 90%.
 
@@ -28,7 +28,14 @@ The notebook uses a stratified **60% train / 15% validation / 25% test** split:
 - Validation data is used to select the operating threshold for the target precision.
 - The test set is held out for final PR-AUC, ROC-AUC, precision, and recall reporting.
 
-This separation avoids selecting a threshold on the same test labels used to report its performance. Run the notebook from top to bottom to generate the current results and output files. Earlier metrics recorded before this split change are historical and should not be compared directly with the newly evaluated models.
+This separation avoids selecting a threshold on the same test labels used to report its performance. Using the uploaded AI4I 2020 CSV and the current notebook split, the held-out test results were:
+
+| Model | PR-AUC | ROC-AUC | Precision at validation-selected threshold | Recall at that threshold |
+|---|---:|---:|---:|---:|
+| Calibrated Logistic Regression | 0.3774 | 0.8846 | 1.0000 | 0.0706 |
+| Random Forest | 0.7209 | 0.9638 | 0.8571 | 0.2824 |
+
+The threshold targets 90% precision on the validation split; test precision is reported as measured and is not guaranteed to remain at 90%. Random Forest ranked failures better overall on this split, while its test precision at the selected operating point was below the target. These are single-split results, not production guarantees.
 
 ## What the notebook covers
 
